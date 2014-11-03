@@ -32,22 +32,20 @@ format="`ciop-getparam format`"
 
 [ "$format" != "BEAM-DIMAP" ] && [ "$format" != "GeoTIFF" ] && exit $ERR_FORMAT
 
-averageSalinity="`ciop-getparam averageSalinity`"
-averageTemperature="`ciop-getparam averageTemperature`"
-ccCloudBufferWidth="`ciop-getparam ccCloudBufferWidth`"
-ccCloudScreeningAmbiguous="`ciop-getparam ccCloudScreeningAmbiguous`"
-ccCloudScreeningSure="`ciop-getparam ccCloudScreeningSure`"
-ccIgnoreSeaIceClimatology="`ciop-getparam ccIgnoreSeaIceClimatology`"
-ccOutputCloudProbabilityFeatureValue="`ciop-getparam ccOutputCloudProbabilityFeatureValue`"
+atmoNetFlintFile="`ciop-getparam atmoNetFlintFile`"
+atmoNetMerisFile="`ciop-getparam atmoNetMerisFile`"
 cloudIceExpression="`ciop-getparam cloudIceExpression`"
-doCalibration="`ciop-getparam doCalibration`"
-doEqualization="`ciop-getparam doEqualization`"
-doSmile="`ciop-getparam doSmile`"
+deriveRwFromPath="`ciop-getparam deriveRwFromPath`"
+doSmileCorrection="`ciop-getparam doSmileCorrection`"
 landExpression="`ciop-getparam landExpression`"
-outputL2RReflecAs="`ciop-getparam outputL2RReflecAs`"
-outputL2RToa="`ciop-getparam outputL2RToa`"
-useExtremeCaseMode="`ciop-getparam useExtremeCaseMode`"
-useSnTMap="`ciop-getparam useSnTMap`"
+outputAutoTosa="`ciop-getparam outputAutoTosa`"
+outputNormReflec="`ciop-getparam outputNormReflec`"
+outputPath="`ciop-getparam outputPath`"
+outputReflec="`ciop-getparam outputReflec`"
+outputReflecAs="`ciop-getparam outputReflecAs`"
+outputTosa="`ciop-getparam outputTosa`"
+outputTransmittance="`ciop-getparam outputTransmittance`"
+useFlint="`ciop-getparam useFlint`"
 
 # loop and process all MERIS products
 while read inputfile 
@@ -70,22 +68,20 @@ outputname=`basename $retrieved`
     -SccL1P=$retrieved \
     -f $format \
     -t $OUTPUTDIR/$outputname \
-    -PaverageSalinity="$averageSalinity" \
-    -PaverageTemperature="$averageTemperature" \
-    -PccCloudBufferWidth="$ccCloudBufferWidth" \
-    -PccCloudScreeningAmbiguous="$ccCloudScreeningAmbiguous" \
-    -PccCloudScreeningSure="$ccCloudScreeningSure" \
-    -PccIgnoreSeaIceClimatology="$ccIgnoreSeaIceClimatology" \
-    -PccOutputCloudProbabilityFeatureValue="$ccOutputCloudProbabilityFeatureValue" \
-    -PcloudIceExpression="$cloudIceExpression" \
-    -PdoCalibration="$doCalibration" \
-    -PdoEqualization="$doEqualization" \
-    -PdoSmile="$doSmile" \
-    -PlandExpression="$landExpression" \
-    -PoutputL2RReflecAs="$outputL2RReflecAs" \
-    -PoutputL2RToa="$outputL2RToa" \
-    -PuseExtremeCaseMode="$useExtremeCaseMode" \
-    -PuseSnTMap="$useSnTMap" 
+    -PatmoNetFlintFile="$averageSalinity" \
+    -PatmoNetMerisFile="$averageTemperature" \
+    -PcloudIceExpression="$ccCloudBufferWidth" \
+    -PderiveRwFromPath="$ccCloudScreeningAmbiguous" \
+    -PdoSmileCorrection="$ccCloudScreeningSure" \
+    -PlandExpression="$ccIgnoreSeaIceClimatology" \
+    -PoutputAutoTosa="$ccOutputCloudProbabilityFeatureValue" \
+    -PoutputNormReflec="$cloudIceExpression" \
+    -PoutputPath=="$doCalibration" \
+    -PoutputReflec=="$doEqualization" \
+    -PoutputReflecAs="$doSmile" \
+    -PoutputTosa=<"$landExpression" \
+    -PoutputTransmittance="$outputL2RReflecAs" \
+    -PuseFlint="$useFlint" 
     
   res=$?
   [ $res != 0 ] && exit $ERR_BEAM
