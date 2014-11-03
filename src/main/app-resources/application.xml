@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<application id="beam-coastcolour-l2r">
+<application id="beam-glint-correction">
   <jobTemplates>
     <jobTemplate id="GlintCorrection">
       <streamingExecutable>/application/glintcorrection/run.sh</streamingExecutable>
@@ -8,23 +8,21 @@
 	<parameter id="startdate" title="Start date" abstract="Start date of the TOI. Used as queryable for the MERIS Level 1 catalogue" scope="runtime" type="opensearch" target="time:start">2009-07-28T00:00:00</parameter>
         <parameter id="enddate" title="End date" abstract="End date of the TOI. Used as queryable for the MERIS Level 1 catalogue" scope="runtime" type="opensearch" target="time:end">2009-07-28T23:59:59</parameter>
         <parameter id="bbox" title="End date" abstract="End date of the TOI. Used as queryable for the MERIS Level 1 catalogue" scope="runtime" type="opensearch" target="geo:box">7,43,8,44</parameter>
-        <parameter id="averageSalinity" title="averageSalinity" abstract="If no climatology is used, the average salinity of the water in the region to be processed is taken. Default value is '35'. Parameter unit is 'PSU'." scope="runtime">35</parameter>
-        <parameter id="averageTemperature" title="averageTemperature" abstract="If no climatology is used, the average temperature of the water in the region to be processed is taken. Default value is '15'. Parameter unit is 'C'" scope="runtime">15</parameter>
-        <parameter id="ccCloudBufferWidth" title="ccCloudBufferWidth" abstract="The width of a cloud 'safety buffer' around a pixel which was classified as cloudy. Valid interval is [0,100]. Default value is '2'." scope="runtime">2</parameter> 
-        <parameter id="ccCloudScreeningAmbiguous" title="ccCloudScreeningAmbiguous" abstract=" Threshold of Cloud Probability Feature Value above which cloud is regarded as still ambiguous (i.e. a higher value results in fewer ambiguous clouds). Default value is '1.4'." scope="runtime">1.4</parameter>
-        <parameter id="ccCloudScreeningSure" title="ccCloudScreeningSure" abstract="Threshold of Cloud Probability Feature Value above which cloud is regarded as sure (i.e. a higher value results in fewer sure clouds). Default value is '1.8'." scope="runtime">1.8</parameter>
-        <parameter id="ccIgnoreSeaIceClimatology" title="ccIgnoreSeaIceClimatology" abstract="Check for sea/lake ice also outside Sea Ice Climatology area. Default value is 'false'." scope="runtime">false</parameter>
-        <parameter id="ccOutputCloudProbabilityFeatureValue" title="ccOutputCloudProbabilityFeatureValue" abstract="Write Cloud Probability Feature Value to the target product. Default value is 'false'." scope="runtime">false</parameter>
-        <parameter id="cloudIceExpression" title="cloudIceExpression" abstract="The arithmetic expression used for cloud/ice masking. Value must not be empty." scope="runtime"><![CDATA[(l1p_flags.CC_CLOUD && not l1p_flags.CC_CLOUD_AMBIGUOUS) || l1p_flags.CC_SNOW_ICE]]></parameter>
-        <parameter id="doCalibration" title="doCalibration" abstract="Applies correction from MERIS 2nd to 3rd reprocessing quality. Default value is 'false'." scope="runtime">true</parameter>
-        <parameter id="doEqualization" title="doEqualization" abstract="Perform removal of detector-to-detector systematic radiometric differences in MERIS L1b data products. Default value is 'true'." scope="runtime">true</parameter>
-        <parameter id="doSmile" title="doSmile" abstract=" Whether to perform MERIS Smile-effect correction. Default value is 'true'." scope="runtime">true</parameter>
-        <parameter id="landExpression" title="landExpression" abstract="The arithmetic expression used for land masking. Default value is 'l1p_flags.CC_LAND'. Value must not be empty." scope="runtime"><![CDATA[l1p_flags.CC_LAND]]></parameter>
-        <parameter id="outputL2RReflecAs" title="outputL2RReflecAs" abstract="Select if all output reflectances shall be written as radiances or irradiances. The irradiances ( = radiances multiplied by PI) are compatible with the standard MERIS product. Value must be one of 'RADIANCE_REFLECTANCES', 'IRRADIANCE_REFLECTANCES'. Default value is 'RADIANCE_REFLECTANCES'." scope="runtime">RADIANCE_REFLECTANCES</parameter>
-      	<parameter id="outputL2RToa" title="outputL2RToa" abstract="Writes the Top of Atmosphere reflectances to the CC L2R target product. Default value is 'false'." scope="runtime">false</parameter>
-      	<parameter id="useExtremeCaseMode" title="useExtremeCaseMode" abstract="If selected a neural network for maximum range of concentrations and IOPs is used. If deselected a neural net with limited ranges but less noisy for low concentration ranges is used." scope="runtime">true</parameter>
-      	<parameter id="useSnTMap" title="useSnTMap" abstract="By default a climatology map is used. If set to 'false' the specified average values are used for the whole scene. Default value is 'true'." scope="runtime">true</parameter>
-      </defaultParameters>
+        <parameter id="atmoNetFlintFile" title="atmoNetFlintFile" abstract="The file of the atmospheric net to be used instead of the default neural net. Default value is 'atmo_correct_flint/25x30x40_6936.3.net'." scope="runtime">atmo_correct_flint/25x30x40_6936.3.net</parameter>
+        <parameter id="atmoNetMerisFile" title="atmoNetMerisFile" abstract="The file of the atmospheric net to be used instead of the default neural net. Default value is 'atmo_correct_meris/20x25x45_55990.1.net'" scope="runtime">atmo_correct_meris/20x25x45_55990.1.net</parameter>
+        <parameter id="cloudIceExpression" title="cloudIceExpression" abstract="The arithmetic expression used for cloud/ice detection. Default value is 'toa_reflec_14 > 0.2'" scope="runtime"><![CDATA[toa_reflec_14 > 0.2]]></parameter> 
+        <parameter id="deriveRwFromPath" title="deriveRwFromPath" abstract="Switch between computation of water leaving reflectance from path reflectance and direct use of neural net output." scope="runtime">false</parameter>
+        <parameter id="doSmileCorrection" title="doSmileCorrection" abstract="Whether to perform Smile-effect correction." scope="runtime">false</parameter>
+        <parameter id="landExpression" title="landExpression" abstract="The arithmetic expression used for land detection." scope="runtime"><![CDATA[toa_reflec_10 > toa_reflec_6 AND toa_reflec_13 > 0.0475]]></parameter>
+        <parameter id="outputAutoTosa" title="outputAutoTosa" abstract="Toggles the output of Top of Standard Atmosphere reflectance calculated by an auto associative neural net." scope="runtime">false</parameter>
+        <parameter id="outputNormReflec" title="outputNormReflec" abstract="Toggles the output of normalised reflectances." scope="runtime">false</parameter>
+        <parameter id="outputPath" title="outputPath" abstract="Toggles the output of water leaving path reflectance." scope="runtime">true</parameter>
+        <parameter id="outputReflec" title="outputReflec" abstract="Toggles the output of water leaving reflectance." scope="runtime">true</parameter>
+        <parameter id="outputReflecAs" title="outputReflecAs" abstract=" Select if reflectances shall be written as radiances or irradiances. The irradiances are compatible with standard MERIS product. Value must be one of 'RADIANCE_REFLECTANCES', 'IRRADIANCE_REFLECTANCES'. Default value is 'RADIANCE_REFLECTANCES'." scope="runtime">RADIANCE_REFLECTANCES</parameter>
+        <parameter id="outputTosa" title="outputTosa" abstract="Toggles the output of Top of Standard Atmosphere reflectance." scope="runtime">true</parameter>
+        <parameter id="outputTransmittance" title="outputTransmittance" abstract="Toggles the output of downwelling irradiance transmittance." scope="runtime">true</parameter>
+      	<parameter id="useFlint" title="useFlint" abstract="Toggles the usage of a FLINT value in neural net." scope="runtime">false</parameter>
+        </defaultParameters>
       <defaultJobconf>
         <property id="mapred.task.timeout">9900000000000</property>
       </defaultJobconf>
