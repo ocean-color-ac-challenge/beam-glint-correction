@@ -65,22 +65,22 @@ do
 outputname=`basename $retrieved`
   
   $_CIOP_APPLICATION_PATH/shared/bin/gpt.sh CoastColour.L2R \
-    -SccL1P=$retrieved \
+    -SmerisProduct=$retrieved \
     -f $format \
     -t $OUTPUTDIR/$outputname \
-    -PatmoNetFlintFile="$averageSalinity" \
-    -PatmoNetMerisFile="$averageTemperature" \
-    -PcloudIceExpression="$ccCloudBufferWidth" \
-    -PderiveRwFromPath="$ccCloudScreeningAmbiguous" \
-    -PdoSmileCorrection="$ccCloudScreeningSure" \
-    -PlandExpression="$ccIgnoreSeaIceClimatology" \
-    -PoutputAutoTosa="$ccOutputCloudProbabilityFeatureValue" \
-    -PoutputNormReflec="$cloudIceExpression" \
-    -PoutputPath=="$doCalibration" \
-    -PoutputReflec=="$doEqualization" \
-    -PoutputReflecAs="$doSmile" \
-    -PoutputTosa=<"$landExpression" \
-    -PoutputTransmittance="$outputL2RReflecAs" \
+    -PatmoNetFlintFile="$atmoNetFlintFile" \
+    -PatmoNetMerisFile="$atmoNetMerisFile" \
+    -PcloudIceExpression="$cloudIceExpression" \
+    -PderiveRwFromPath="$deriveRwFromPath" \
+    -PdoSmileCorrection="$doSmileCorrection" \
+    -PlandExpression="$landExpression" \
+    -PoutputAutoTosa="$outputAutoTosa" \
+    -PoutputNormReflec="$outputNormReflec" \
+    -PoutputPath="$outputPath" \
+    -PoutputReflec="$outputReflec" \
+    -PoutputReflecAs="$outputReflecAs" \
+    -PoutputTosa="$outputTosa" \
+    -PoutputTransmittance="$outputTransmittance" \
     -PuseFlint="$useFlint" 
     
   res=$?
